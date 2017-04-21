@@ -37,7 +37,6 @@
 #include "structs.cuh"
 #include "utils.cuh"
 #include "inverted_index.cuh"
-#include "cuCompactor.cuh"
 
 
 __host__ int findSimilars(InvertedIndex index, float threshold, struct DeviceVariables *dev_vars, Pair *result,
