@@ -46,7 +46,7 @@ void print_invertedIndex(InvertedIndex index) {
 			printf("\n[%d]: ", inverted_index[i].term_id);
 			term = inverted_index[i].term_id;
 		}
-		printf("%d ", inverted_index[i].doc_id);
+		printf("%d ", inverted_index[i].set_id);
 	}
 	printf("\n");
 }

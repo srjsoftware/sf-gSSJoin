@@ -31,32 +31,14 @@
 using namespace std;
 
 struct Entry {
-    int doc_id;
+    int set_id;
     int term_id;
-    int tf;
-    float tf_idf;
 
-    __host__ __device__ Entry(int doc_id, int term_id, int tf = 0, float tf_idf = 0.0) : doc_id(doc_id), term_id(term_id), tf(tf), tf_idf(tf_idf) {}
+    __host__ __device__ Entry(int doc_id, int term_id) : set_id(doc_id), term_id(term_id) {}
 
     bool operator < (const Entry& e) const {
-        if(doc_id != e.doc_id) return doc_id < e.doc_id;
+        if(set_id != e.set_id) return set_id < e.set_id;
         return term_id < e.term_id;
-    }
-};
-
-struct Similarity {
-    int doc_id;
-    float distance;
-
-    Similarity() {}
-    __host__ __device__ Similarity(int doc_id, float distance) : doc_id(doc_id), distance(distance) {}
-
-    __host__ __device__ bool operator < (const Similarity &sim) const {
-        return distance > sim.distance;
-    }
-
-    __host__ __device__ bool operator > (const Similarity &sim) const {
-        return distance < sim.distance;
     }
 };
 
@@ -70,8 +52,6 @@ struct DeviceVariables{
 	int *d_sizes, *d_starts, *d_intersection, *d_index, *d_count;
     Entry *d_inverted_index, *d_entries, *d_probes;
     Pair *h_pairs, *d_pairs;
-    //Similarity *d_dist, *d_result;//, *d_nearestK, *h_nearestK;
-    //float *d_qnorms, *d_similars;// [2] =  *d_qnorm, *d_qnorml1;
 };
 
 struct FileStats {
@@ -79,7 +59,6 @@ struct FileStats {
 	int num_terms;
 
 	vector<int> sizes; // set sizes
-	//map<int, int> doc_to_class;
 	vector<int> start; // beginning of each sets
 
 	FileStats() : num_sets(0), num_terms(0) {}

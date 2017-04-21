@@ -165,14 +165,13 @@ FileStats readInputFile(string &filename, vector<Entry> &entries) {
 
 	FileStats stats;
 	int accumulatedsize = 0;
-	int doc_id = 0;
+	int set_id = 0;
 
 	while (!input.eof()) {
 		getline(input, line);
 		if (line == "") continue;
 
 		vector<string> tokens = split(line, ' ');
-		//biggestQuerySize = max((int)tokens.size() / 2, biggestQuerySize);
 
 		int size = (tokens.size() - 2)/2;
 		stats.sizes.push_back(size);
@@ -181,11 +180,10 @@ FileStats readInputFile(string &filename, vector<Entry> &entries) {
 
 		for (int i = 2, size = tokens.size(); i + 1 < size; i += 2) {
 			int term_id = atoi(tokens[i].c_str());
-			int term_count = atoi(tokens[i + 1].c_str());
 			stats.num_terms = max(stats.num_terms, term_id + 1);
-			entries.push_back(Entry(doc_id, term_id, term_count));
+			entries.push_back(Entry(set_id, term_id));
 		}
-		doc_id++;
+		set_id++;
 	}
 
 	stats.num_sets = stats.start.size();
