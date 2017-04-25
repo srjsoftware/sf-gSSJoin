@@ -1,6 +1,6 @@
 /*********************************************************************
 11	
-12	 Copyright (C) 2015 by Wisllay Vitrio
+12	 Copyright (C) 2017 by Sidney Ribeiro Junior
 13	
 14	 This program is free software; you can redistribute it and/or modify
 15	 it under the terms of the GNU General Public License as published by
@@ -18,13 +18,6 @@
 27	
 28	 ********************************************************************/
 
-/*
- * structs.cuh
- *
- *  Created on: Dec 4, 2013
- *      Author: silvereagle
- */
-
 #ifndef STRUCTS_CUH_
 #define STRUCTS_CUH_
 
@@ -35,11 +28,6 @@ struct Entry {
     int term_id;
 
     __host__ __device__ Entry(int doc_id, int term_id) : set_id(doc_id), term_id(term_id) {}
-
-    bool operator < (const Entry& e) const {
-        if(set_id != e.set_id) return set_id < e.set_id;
-        return term_id < e.term_id;
-    }
 };
 
 struct Pair {
@@ -50,8 +38,8 @@ struct Pair {
 
 struct DeviceVariables{
 	int *d_sizes, *d_starts, *d_intersection, *d_index, *d_count;
-    Entry *d_inverted_index, *d_entries, *d_probes;
-    Pair *h_pairs, *d_pairs;
+    Entry *d_inverted_index, *d_entries;
+    Pair *d_pairs;
 };
 
 struct FileStats {
