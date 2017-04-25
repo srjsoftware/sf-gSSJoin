@@ -91,7 +91,7 @@ void get_grid_config(dim3 &grid, dim3 &threads) {
 
 		//Adjust the grid dimensions based on the device properties
 		int num_blocks = devProp.multiProcessorCount;
-		lgrid = dim3(num_blocks);
+		lgrid = dim3(num_blocks*256);
 		lthreads = dim3(devProp.maxThreadsPerBlock);
 		//lgrid = dim3(8);
 		//lthreads = dim3(512);
