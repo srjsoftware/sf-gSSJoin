@@ -9,7 +9,7 @@ this package.
 
 We used some code developed by Wisllay Vitrio and Mateus Freitas: https://github.com/mateusffreitas/FT-kNN
 
-Usage: <executable> <input_file> <threshold> <output_file> <number_of_gpus>
+Usage: <executable> <input_file> <threshold> <output_file> <number_of_gpus> <block_size>
 
 File format:
 
