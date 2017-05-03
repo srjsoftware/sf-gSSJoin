@@ -99,10 +99,10 @@ __global__ void calculateJaccardSimilarity(int *intersection, Pair *pairs, int *
 	int i = blockIdx.x*blockDim.x + threadIdx.x;
 
 	for (; i < intersection_size; i += gridDim.x*blockDim.x) {
-		int x = i/probe_block_size + probes_start;
-		int y = i%indexed_block_size + indexed_start;
+		if (intersection[i]) {
+			int x = i/probe_block_size + probes_start;
+			int y = i%indexed_block_size + indexed_start;
 
-		if (x < y) {
 			float similarity = (float) intersection[i]/(sizes[x] + sizes[y] - intersection[i]);
 
 			if (similarity >= threshold) {
