@@ -11,4 +11,6 @@ We used some code developed by Wisllay Vitrio and Mateus Freitas: https://github
 
 Usage: <executable> <input_file> <threshold> <output_file> <number_of_gpus>
 
-File format: <id> <classification group id only for tests, default 0> <term id> <number of ocurrencies> <term id> <number of ocurrencies> ...
+File format:
+
+Each line is a set and each number in a line is the id of an element contained in the set.
