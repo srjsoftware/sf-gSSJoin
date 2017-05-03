@@ -71,8 +71,11 @@ int main(int argc, char **argv) {
 	omp_set_num_threads(gpuNum);
 
 	string inputFileName(argv[1]);
+	double start = gettime();
 	printf("Reading file %s...\n", inputFileName.c_str());
 	FileStats stats = readInputFile(inputFileName, entries);
+	double end = gettime();
+	printf("Time taken: %lf\n", end - start);
 
 	ofstream ofsf(argv[3], ofstream::trunc);
 	ofsf.close();
@@ -93,7 +96,9 @@ int main(int argc, char **argv) {
 	block_size = block_size > stats.num_sets? stats.num_sets: block_size;
 	int block_num = ceil((float) stats.num_sets / block_size);
 
-	double start = gettime();
+	start = gettime();
+
+	printf("Processing join...\n");
 
 	#pragma omp parallel num_threads(gpuNum)
 	{
@@ -144,7 +149,7 @@ int main(int argc, char **argv) {
 		freeVariables(&dev_vars, &similar_pairs);
 	}
 
-	double end = gettime();
+	end = gettime();
 
 	printf("Time to process similarity join between %d sets: %lf seconds\n", stats.num_sets, end - start);
 
@@ -169,12 +174,12 @@ FileStats readInputFile(string &filename, vector<Entry> &entries) {
 
 		vector<string> tokens = split(line, ' ');
 
-		int size = (tokens.size() - 2)/2;
+		int size = tokens.size();
 		stats.sizes.push_back(size);
 		stats.start.push_back(accumulatedsize);
 		accumulatedsize += size;
 
-		for (int i = 2, size = tokens.size(); i + 1 < size; i += 2) {
+		for (int i = 0; i < size; i++) {
 			int term_id = atoi(tokens[i].c_str());
 			stats.num_terms = max(stats.num_terms, term_id + 1);
 			entries.push_back(Entry(set_id, term_id));
