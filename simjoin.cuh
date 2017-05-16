@@ -25,13 +25,13 @@
 
 __host__ int findSimilars(InvertedIndex index, float threshold, struct DeviceVariables *dev_vars, Pair *similar_pairs,
 		int probes_start, int probe_block_size, int probes_offset,
-		int indexed_start, int indexed_block_size);
+		int indexed_start, int indexed_block_size, int block_size);
 
 __global__ void calculateIntersection(InvertedIndex index, int *intersection, Entry *probes, int *set_starts,
-		int *set_sizes, int block_start, int block_size, int probes_offset, int indexed_offset, float threshold);
+		int *set_sizes, int block_start, int probe_block_size, int probes_offset, int indexed_offset, float threshold, int block_size);
 
 __global__ void calculateJaccardSimilarity(int *intersection, Pair *pairs, int *totalSimilars, int *sizes,
-		int intersection_size, int probes_offset, int indexed_offset, int block_size, int indexed_block_size,
-		float threshold);
+		int intersection_size, int probes_offset, int indexed_offset, int probe_block_size, int indexed_block_size,
+		float threshold, int block_size);
 
 #endif /* KNN_CUH_ */

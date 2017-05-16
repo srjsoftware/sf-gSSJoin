@@ -138,7 +138,7 @@ int main(int argc, char **argv) {
 
 				//printf("=========Probe Block %d=========\nprobe_block_start = %d\nprobe_offset: %d\nlast_probe: %d\nprobe_block_size: %d\n===============================\n", j, probe_block_start, probes_offset,last_probe, probe_block_size);
 				int totalSimilars = findSimilars(index, threshold, &dev_vars, similar_pairs, probe_block_start,
-						probe_block_size, probes_offset, entries_block_start, entries_block_size);
+						probe_block_size, probes_offset, entries_block_start, entries_block_size, block_size);
 
 				//print_intersection(dev_vars.d_intersection, block_size, i, j); //print_result(similar_pairs, totalSimilars);
 				write_output(similar_pairs, totalSimilars, *outputString[gpuid]);

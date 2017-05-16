@@ -27,24 +27,23 @@
 
 
 __host__ InvertedIndex make_inverted_index(int num_docs, int num_terms, int size_entries, int entries_offset, vector<Entry> &entries, struct DeviceVariables *dev_vars) {
-	Entry *d_entries = dev_vars->d_entries, *d_inverted_index = dev_vars->d_inverted_index;
+	Entry *d_entries = dev_vars->d_entries + entries_offset, *d_inverted_index = dev_vars->d_inverted_index;
 	int *d_count = dev_vars->d_count, *d_index = dev_vars->d_index;
 
 	gpuAssert(cudaMemset(d_count, 0, num_terms * sizeof(int)));
-	gpuAssert(cudaMemcpy(d_entries, &entries[entries_offset], size_entries * sizeof(Entry), cudaMemcpyHostToDevice));
 
 	dim3 grid, threads;
 	get_grid_config(grid, threads);
 
 	double start = gettime();
 
-	count_occurrences << <grid, threads >> >(d_entries, d_count, size_entries);
+	count_occurrences<<<grid, threads>>>(d_entries, d_count, size_entries);
 
 	thrust::device_ptr<int> thrust_d_count(d_count);
 	thrust::device_ptr<int> thrust_d_index(d_index);
 	thrust::exclusive_scan(thrust_d_count, thrust_d_count + num_terms, thrust_d_index);
 
-	mount_inverted_index_and_compute_tf_idf << <grid, threads >> >(d_entries, d_inverted_index, d_count,
+	mount_inverted_index_and_compute_tf_idf<<<grid, threads >>>(d_entries, d_inverted_index, d_count,
 		d_index, size_entries, num_docs);
 
 	gpuAssert(cudaDeviceSynchronize());
